@@ -43,7 +43,8 @@ public class DatabaseUserRepository implements UserRepository {
 
     @Override
     public boolean save(User user) {
-        return false;
+        return executeUpdate(INSERT_USER_DML_SQL,e->{},
+                user.getName(),user.getPassword(),user.getEmail(),user.getPhoneNumber());
     }
 
     @Override
@@ -137,7 +138,32 @@ public class DatabaseUserRepository implements UserRepository {
         return null;
     }
 
+    protected Boolean executeUpdate(String sql,Consumer<Throwable> exceptionHandler, Object... args) {
+        Connection connection = getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for (int i = 0; i < args.length; i++) {
+                Object arg = args[i];
+                Class argType = arg.getClass();
 
+                Class wrapperType = wrapperToPrimitive(argType);
+
+                if (wrapperType == null) {
+                    wrapperType = argType;
+                }
+
+                // Boolean -> boolean
+                String methodName = preparedStatementMethodMappings.get(argType);
+                Method method = PreparedStatement.class.getMethod(methodName, wrapperType);
+                method.invoke(preparedStatement, i + 1, args);
+            }
+            int updateRowCounts = preparedStatement.executeUpdate();
+            return updateRowCounts > 0;
+        } catch (Throwable e) {
+            exceptionHandler.accept(e);
+        }
+        return null;
+    }
     private static String mapColumnLabel(String fieldName) {
         return fieldName;
     }

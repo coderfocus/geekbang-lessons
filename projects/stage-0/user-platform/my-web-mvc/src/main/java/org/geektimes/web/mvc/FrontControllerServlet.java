@@ -44,6 +44,7 @@ public class FrontControllerServlet extends HttpServlet {
      *
      * @param servletConfig
      */
+    @Override
     public void init(ServletConfig servletConfig) {
         initHandleMethods();
     }
@@ -57,18 +58,19 @@ public class FrontControllerServlet extends HttpServlet {
             Class<?> controllerClass = controller.getClass();
             Path pathFromClass = controllerClass.getAnnotation(Path.class);
             String requestPath = pathFromClass.value();
-            Method[] publicMethods = controllerClass.getMethods();
+            Method[] publicMethods = controllerClass.getDeclaredMethods();
             // 处理方法支持的 HTTP 方法集合
             for (Method method : publicMethods) {
                 Set<String> supportedHttpMethods = findSupportedHttpMethods(method);
                 Path pathFromMethod = method.getAnnotation(Path.class);
                 if (pathFromMethod != null) {
+                    requestPath = pathFromClass.value();
                     requestPath += pathFromMethod.value();
+                    handleMethodInfoMapping.put(requestPath,
+                            new HandlerMethodInfo(requestPath, method, supportedHttpMethods));
+                    controllersMapping.put(requestPath, controller);
                 }
-                handleMethodInfoMapping.put(requestPath,
-                        new HandlerMethodInfo(requestPath, method, supportedHttpMethods));
             }
-            controllersMapping.put(requestPath, controller);
         }
     }
 
@@ -135,7 +137,10 @@ public class FrontControllerServlet extends HttpServlet {
 
                     if (controller instanceof PageController) {
                         PageController pageController = PageController.class.cast(controller);
-                        String viewPath = pageController.execute(request, response);
+//                        String viewPath = pageController.execute(request, response);
+
+                        Method handlerMethod = handlerMethodInfo.getHandlerMethod();
+                        String viewPath = handlerMethod.invoke(pageController,request,response).toString();
                         // 页面请求 forward
                         // request -> RequestDispatcher forward
                         // RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewPath);

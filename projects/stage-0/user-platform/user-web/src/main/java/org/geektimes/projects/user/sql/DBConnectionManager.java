@@ -1,7 +1,12 @@
 package org.geektimes.projects.user.sql;
 
 import org.geektimes.projects.user.domain.User;
+import org.geektimes.web.mvc.controller.Controller;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -11,10 +16,36 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ServiceLoader;
 
 public class DBConnectionManager {
 
     private Connection connection;
+
+    public DBConnectionManager(){
+        Context context = null;
+//        try{
+//            context = new InitialContext();
+//            DataSource dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/UserPlatformDB");
+//            this.connection = dataSource.getConnection();
+//        }catch (NamingException ex){
+//            ex.printStackTrace();
+//        } catch (SQLException ex) {
+//            ex.printStackTrace();
+//        }finally {
+//        }
+
+//        try{
+//            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+//            String databaseURL = "jdbc:derby:/db/user-platform;create=true";
+//            Connection connection = DriverManager.getConnection(databaseURL);
+//            this.connection = connection;
+//        }catch (Exception ex){
+//            ex.printStackTrace();
+//        }finally {
+//        }
+
+    }
 
     public void setConnection(Connection connection) {
         this.connection = connection;
