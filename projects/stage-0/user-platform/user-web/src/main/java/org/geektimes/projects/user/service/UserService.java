@@ -2,6 +2,9 @@ package org.geektimes.projects.user.service;
 
 import org.geektimes.projects.user.domain.User;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * 用户服务
  */
@@ -34,4 +37,6 @@ public interface UserService {
     User queryUserById(Long id);
 
     User queryUserByNameAndPassword(String name, String password);
+
+    Collection<User> queryAllUsers();
 }

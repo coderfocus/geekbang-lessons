@@ -4,9 +4,12 @@ import org.geektimes.projects.user.domain.User;
 import org.geektimes.projects.user.repository.DatabaseUserRepository;
 import org.geektimes.projects.user.sql.DBConnectionManager;
 
+import java.util.Collection;
+import java.util.List;
+
 public class UserServiceImpl implements UserService {
 
-//    private DatabaseUserRepository userRepository = new DatabaseUserRepository(new DBConnectionManager());
+    private DatabaseUserRepository userRepository = new DatabaseUserRepository(new DBConnectionManager());
 
     /**
      * 注册用户
@@ -16,8 +19,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean register(User user) {
-        return false;
-//        return userRepository.save(user);
+        return userRepository.save(user);
     }
 
     /**
@@ -50,5 +52,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User queryUserByNameAndPassword(String name, String password) {
         return null;
+    }
+
+    @Override
+    public Collection<User> queryAllUsers() {
+        return userRepository.getAll();
     }
 }

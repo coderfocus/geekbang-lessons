@@ -16,6 +16,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
+import java.util.Collection;
 
 /**
  * 输出 “Hello,World” Controller
@@ -23,7 +24,7 @@ import java.sql.ResultSet;
 @Path("/register")
 public class RegisterController implements PageController {
 
-//    private UserService userService = new UserServiceImpl();
+    private UserService userService = new UserServiceImpl();
 
     @GET
     @Path("/")
@@ -51,8 +52,8 @@ public class RegisterController implements PageController {
             }
            return user;
         },request);
-//        boolean registerResult = userService.register(model);
-        boolean registerResult = true;
+        Collection<User> users = userService.queryAllUsers();
+        boolean registerResult = userService.register(model);
         if(registerResult){
             return "success.jsp";
         }

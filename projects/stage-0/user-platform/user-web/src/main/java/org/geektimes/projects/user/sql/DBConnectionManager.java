@@ -24,16 +24,19 @@ public class DBConnectionManager {
 
     public DBConnectionManager(){
         Context context = null;
-//        try{
-//            context = new InitialContext();
-//            DataSource dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/UserPlatformDB");
-//            this.connection = dataSource.getConnection();
-//        }catch (NamingException ex){
-//            ex.printStackTrace();
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }finally {
-//        }
+        try{
+            context = new InitialContext();
+            DataSource dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/UserPlatformDB");
+            this.connection = dataSource.getConnection();
+            Statement statement = connection.createStatement();
+            // 创建 users 表
+            System.out.println(statement.execute(CREATE_USERS_TABLE_DDL_SQL));
+        }catch (NamingException ex){
+            ex.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally {
+        }
 
 //        try{
 //            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -91,12 +94,12 @@ public class DBConnectionManager {
 //        Driver driver = DriverManager.getDriver("jdbc:derby:/db/user-platform;create=true");
 //        Connection connection = driver.connect("jdbc:derby:/db/user-platform;create=true", new Properties());
 
-        String databaseURL = "jdbc:derby:/db/user-platform;create=true";
+        String databaseURL = "jdbc:derby:Databases/UserPlatformDB;create=true";
         Connection connection = DriverManager.getConnection(databaseURL);
 
         Statement statement = connection.createStatement();
         // 删除 users 表
-        System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL)); // false
+//        System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL)); // false
         // 创建 users 表
         System.out.println(statement.execute(CREATE_USERS_TABLE_DDL_SQL)); // false
         System.out.println(statement.executeUpdate(INSERT_USER_DML_SQL));  // 5
