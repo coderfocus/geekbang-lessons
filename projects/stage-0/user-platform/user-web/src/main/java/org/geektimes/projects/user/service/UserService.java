@@ -1,6 +1,7 @@
 package org.geektimes.projects.user.service;
 
 import org.geektimes.projects.user.domain.User;
+import org.geektimes.projects.user.sql.LocalTransactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,6 +17,7 @@ public interface UserService {
      * @param user 用户对象
      * @return 成功返回<code>true</code>
      */
+    @LocalTransactional
     boolean register(User user);
 
     /**
@@ -38,5 +40,4 @@ public interface UserService {
 
     User queryUserByNameAndPassword(String name, String password);
 
-    Collection<User> queryAllUsers();
 }

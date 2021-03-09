@@ -6,6 +6,7 @@ import org.geektimes.projects.user.service.UserService;
 import org.geektimes.projects.user.service.UserServiceImpl;
 import org.geektimes.web.mvc.controller.PageController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
@@ -24,7 +25,8 @@ import java.util.Collection;
 @Path("/register")
 public class RegisterController implements PageController {
 
-    private UserService userService = new UserServiceImpl();
+    @Resource(name = "bean/UserService")
+    private UserService userService;
 
     @GET
     @Path("/")
@@ -52,7 +54,7 @@ public class RegisterController implements PageController {
             }
            return user;
         },request);
-        Collection<User> users = userService.queryAllUsers();
+
         boolean registerResult = userService.register(model);
         if(registerResult){
             return "success.jsp";
