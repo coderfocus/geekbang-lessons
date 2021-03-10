@@ -46,5 +46,7 @@
 			  factory="org.apache.naming.factory.BeanFactory" />
 
 
-
+	<Resource name="controller/RegisterController" auth="Container"
+			  type="org.geektimes.projects.user.web.controller.RegisterController"
+			  factory="org.apache.naming.factory.BeanFactory" />
 </Context>

@@ -1,9 +1,12 @@
 package org.geektimes.projects.user.domain;
 
+import org.geektimes.projects.user.validator.bean.validation.Phone;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -20,7 +23,6 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = AUTO)
-    @NotNull
     private Long id;
 
     @Column
@@ -35,6 +37,8 @@ public class User implements Serializable {
     private String email;
 
     @Column
+    @NotNull(message = "手机号码不能为空")
+    @Pattern(regexp="(^$|[0-9]{11})")
     private String phoneNumber;
 
     public Long getId() {

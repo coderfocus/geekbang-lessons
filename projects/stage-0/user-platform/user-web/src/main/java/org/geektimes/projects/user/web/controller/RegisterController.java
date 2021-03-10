@@ -9,6 +9,10 @@ import org.geektimes.web.mvc.controller.PageController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -18,6 +22,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * 输出 “Hello,World” Controller
@@ -54,6 +59,17 @@ public class RegisterController implements PageController {
             }
            return user;
         },request);
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        // 校验结果
+        Set<ConstraintViolation<User>> violations = validator.validate(model);
+        violations.forEach(c -> {
+            System.out.println(c.getMessage());
+        });
+        if(!violations.isEmpty()){
+            return "failure.jsp";
+        }
 
         boolean registerResult = userService.register(model);
         if(registerResult){

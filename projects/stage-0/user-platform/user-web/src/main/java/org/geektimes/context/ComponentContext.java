@@ -2,6 +2,7 @@ package org.geektimes.context;
 
 import org.geektimes.function.ThrowableAction;
 import org.geektimes.function.ThrowableFunction;
+import org.geektimes.web.mvc.controller.Controller;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -39,7 +40,9 @@ public class ComponentContext {
 
     private ClassLoader classLoader;
 
-    private Map<String, Object> componentsMap = new LinkedHashMap<>();
+    private static Map<String, Object> componentsMap = new LinkedHashMap<>();
+
+    private static List<Controller> controllers = new ArrayList<>();
 
     /**
      * 获取 ComponentContext
@@ -73,7 +76,13 @@ public class ComponentContext {
         // 遍历获取所有的组件名称
         List<String> componentNames = listAllComponentNames();
         // 通过依赖查找，实例化对象（ Tomcat BeanFactory setter 方法的执行，仅支持简单类型）
-        componentNames.forEach(name -> componentsMap.put(name, lookupComponent(name)));
+        componentNames.forEach(name -> {
+            Object component = lookupComponent(name);
+            componentsMap.put(name, component);
+            if(name.startsWith("controller")){
+                controllers.add((Controller) component);
+            }
+        });
     }
 
     /**
@@ -186,8 +195,12 @@ public class ComponentContext {
      * @param <C>
      * @return
      */
-    public <C> C getComponent(String name) {
+    public static <C> C getComponent(String name) {
         return (C) componentsMap.get(name);
+    }
+
+    public static List<Controller> getControllers() {
+        return controllers;
     }
 
     /**
