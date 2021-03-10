@@ -43,35 +43,25 @@ public class RegisterController implements PageController {
     @POST
     @Path("/register")
     public String register(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        User model = getModel(httpRequest -> {
-            BeanInfo userBeanInfo = Introspector.getBeanInfo(User.class, Object.class);
-            User user = new User();
-            for (PropertyDescriptor propertyDescriptor : userBeanInfo.getPropertyDescriptors()) {
-                String fieldName = propertyDescriptor.getName();
-                Class fieldType = propertyDescriptor.getPropertyType();
-                String paramValue = httpRequest.getParameter(fieldName);
-
-                // 获取 User 类 Setter方法
-                // PropertyDescriptor ReadMethod 等于 Getter 方法
-                // PropertyDescriptor WriteMethod 等于 Setter 方法
-                Method setterMethodFromUser = propertyDescriptor.getWriteMethod();
-                setterMethodFromUser.invoke(user, paramValue);
-            }
-           return user;
-        },request);
+        User user = new User();
+        String name = request.getParameter("name");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        String phoneNumber = request.getParameter("phoneNumber");
+        user.setName(name);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         // 校验结果
-        Set<ConstraintViolation<User>> violations = validator.validate(model);
-        violations.forEach(c -> {
-            System.out.println(c.getMessage());
-        });
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
         if(!violations.isEmpty()){
             return "failure.jsp";
         }
 
-        boolean registerResult = userService.register(model);
+        boolean registerResult = userService.register(user);
         if(registerResult){
             return "success.jsp";
         }

@@ -3,10 +3,7 @@ package org.geektimes.projects.user.domain;
 import org.geektimes.projects.user.validator.bean.validation.Phone;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -26,19 +23,20 @@ public class User implements Serializable {
     private Long id;
 
     @Column
+    @NotNull(message = "name不能为空")
     private String name;
 
     @Column
-    @Max(32)
-    @Min(6)
+    @Size(min=6,max=32)
     private String password;
 
     @Column
+    @NotNull(message = "email不能为空")
     private String email;
 
     @Column
-    @NotNull(message = "手机号码不能为空")
-    @Pattern(regexp="(^$|[0-9]{11})")
+    @NotNull(message = "phoneNumber不能为空")
+    @Pattern(regexp="(^$|[0-9]{11})",message = "phoneNumber必须为11位数字")
     private String phoneNumber;
 
     public Long getId() {
