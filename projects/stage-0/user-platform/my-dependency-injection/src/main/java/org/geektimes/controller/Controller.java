@@ -1,4 +1,4 @@
-package org.geektimes.web.mvc.controller;
+package org.geektimes.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

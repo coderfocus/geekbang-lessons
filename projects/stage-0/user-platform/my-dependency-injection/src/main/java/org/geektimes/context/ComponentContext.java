@@ -1,5 +1,7 @@
 package org.geektimes.context;
 
+import org.geektimes.controller.Controller;
+
 import java.util.List;
 
 /**
@@ -36,4 +38,6 @@ public interface ComponentContext {
      * @return
      */
     List<String> getComponentNames();
+
+    List<Controller> getControllers();
 }

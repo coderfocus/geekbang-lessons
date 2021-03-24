@@ -1,5 +1,6 @@
 package org.geektimes.context;
 
+import org.geektimes.controller.Controller;
 import org.geektimes.function.ThrowableAction;
 import org.geektimes.function.ThrowableFunction;
 //import org.geektimes.web.mvc.controller.Controller;
@@ -50,7 +51,7 @@ public class JndiComponentContext implements ComponentContext {
     private Map<Method, Object> preDestroyMethodCache = new LinkedHashMap<>();
     private static Map<String, Object> componentsMap = new LinkedHashMap<>();
 
-//    private static List<Controller> controllers = new ArrayList<>();
+    private static List<Controller> controllers = new ArrayList<>();
 
     /**
      * 获取 ComponentContext
@@ -78,9 +79,9 @@ public class JndiComponentContext implements ComponentContext {
         componentNames.forEach(name -> {
             Object component = lookupComponent(name);
             componentsMap.put(name, component);
-//            if(name.startsWith("controller")){
-//                controllers.add((Controller) component);
-//            }
+            if(component instanceof Controller){
+                controllers.add((Controller) component);
+            }
         });
     }
 
@@ -235,9 +236,10 @@ public class JndiComponentContext implements ComponentContext {
         return (C) componentsMap.get(name);
     }
 
-//    public List<Controller> getControllers() {
-//        return controllers;
-//    }
+    @Override
+    public List<Controller> getControllers() {
+        return controllers;
+    }
 
     /**
      * 获取所有的组件名称
