@@ -1,6 +1,8 @@
 package org.geektimes.web.mvc;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
 import org.geektimes.context.ComponentContext;
 import org.geektimes.context.JndiComponentContext;
 import org.geektimes.controller.Controller;
@@ -38,6 +40,8 @@ public class FrontControllerServlet extends HttpServlet {
 
     private ComponentContext componentContext = JndiComponentContext.getInstance();
 
+    private Config config ;
+
     /**
      * 初始化 Servlet
      *
@@ -45,6 +49,11 @@ public class FrontControllerServlet extends HttpServlet {
      */
     @Override
     public void init(ServletConfig servletConfig) {
+        ConfigProviderResolver configProviderResolver = ConfigProviderResolver.instance();
+        ServletContext servletContext = servletConfig.getServletContext();
+        this.config = configProviderResolver.getConfig(servletContext.getClassLoader());
+        String test = config.getValue("test", String.class);
+        System.out.println(test);
         initHandleMethods();
     }
 
