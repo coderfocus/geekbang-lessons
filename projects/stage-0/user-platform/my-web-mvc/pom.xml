@@ -34,10 +34,5 @@
             <artifactId>commons-lang</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.geekbang.projects</groupId>
-            <artifactId>user-web</artifactId>
-            <version>v1-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 </project>
