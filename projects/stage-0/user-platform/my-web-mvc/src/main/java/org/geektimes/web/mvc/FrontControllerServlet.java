@@ -3,8 +3,8 @@ package org.geektimes.web.mvc;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
+import org.geektimes.context.ClassicComponentContext;
 import org.geektimes.context.ComponentContext;
-import org.geektimes.context.JndiComponentContext;
 import org.geektimes.controller.Controller;
 import org.geektimes.web.mvc.controller.PageController;
 import org.geektimes.web.mvc.controller.RestController;
@@ -38,7 +38,7 @@ public class FrontControllerServlet extends HttpServlet {
      */
     private Map<String, HandlerMethodInfo> handleMethodInfoMapping = new HashMap<>();
 
-    private ComponentContext componentContext = JndiComponentContext.getInstance();
+    private ComponentContext componentContext = ClassicComponentContext.getInstance();
 
     private Config config ;
 
