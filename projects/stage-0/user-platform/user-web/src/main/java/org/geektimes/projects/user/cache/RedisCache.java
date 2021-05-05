@@ -87,6 +87,7 @@ public class RedisCache implements Cache {
 
     @Override
     public void clear() {
+
         // Redis 是否支持 namespace
         // name:key
         // String 类型的 key :

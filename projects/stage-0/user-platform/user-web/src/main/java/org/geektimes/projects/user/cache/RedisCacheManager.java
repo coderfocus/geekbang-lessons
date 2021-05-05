@@ -49,6 +49,7 @@ public class RedisCacheManager extends AbstractCacheManager {
         return caches;
     }
 
+    @Override
     protected Cache getMissingCache(String name) {
         Jedis jedis = jedisPool.getResource();
         return new RedisCache(name, jedis);
