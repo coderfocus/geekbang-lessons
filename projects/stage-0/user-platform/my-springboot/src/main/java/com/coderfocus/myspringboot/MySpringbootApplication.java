@@ -16,12 +16,22 @@ public class MySpringbootApplication {
 
 
     @Autowired
-    private BookService bookService;
+    private BookService bookServiceImpl;
 
 
     @GetMapping("/findBook")
     public String findBook(String isbn){
-        return bookService.findBook(isbn);
+        return bookServiceImpl.findBook(isbn);
+    }
+
+    @GetMapping("/findBook1")
+    public String findBook1(String isbn){
+        return bookServiceImpl.findBook1(isbn);
+    }
+
+    @GetMapping("/findBook2")
+    public String findBook2(String isbn){
+        return bookServiceImpl.findBook2(isbn);
     }
 
 }

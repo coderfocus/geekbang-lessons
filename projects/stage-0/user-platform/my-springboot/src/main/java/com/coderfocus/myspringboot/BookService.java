@@ -1,13 +1,15 @@
 package com.coderfocus.myspringboot;
 
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
 
-@Component
-public class BookService {
+public interface BookService {
+    String findBook(String isbn);
 
-    @Cacheable(cacheNames = "book",key="#isbn")
-    public String findBook(String isbn){
-        return isbn;
-    }
+    @Cacheable(cacheNames = "book1",key="#isbn")
+    String findBook1(String isbn);
+
+    @Cacheable(cacheNames = "book2",key="#isbn")
+    @CachePut(cacheNames = "book2",key="#isbn")
+    String findBook2(String isbn);
 }
