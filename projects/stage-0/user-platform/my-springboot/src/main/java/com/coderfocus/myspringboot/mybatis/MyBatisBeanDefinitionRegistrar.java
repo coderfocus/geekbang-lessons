@@ -14,8 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.geektimes.projects.user.mybatis.annotation;
+package com.coderfocus.myspringboot.mybatis;
 
+import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -57,6 +58,12 @@ public class MyBatisBeanDefinitionRegistrar implements ImportBeanDefinitionRegis
         beanDefinitionBuilder.addPropertyValue("mapperLocations", attributes.get("mapperLocations"));
         beanDefinitionBuilder.addPropertyValue("environment", resolvePlaceholder(attributes.get("environment")));
         // 自行添加其他属性
+
+        String pluginBeanName = (String) attributes.get("plugins");
+        if (StringUtils.isNotBlank(pluginBeanName)) {
+            beanDefinitionBuilder.addPropertyReference("plugins", pluginBeanName);
+        }
+
 
         // SqlSessionFactoryBean 的 BeanDefinition
         BeanDefinition beanDefinition = beanDefinitionBuilder.getBeanDefinition();

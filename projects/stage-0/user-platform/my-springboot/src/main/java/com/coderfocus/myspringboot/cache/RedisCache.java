@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.coderfocus.myspringboot;
+package com.coderfocus.myspringboot.cache;
 
 import org.springframework.cache.Cache;
 import redis.clients.jedis.Jedis;

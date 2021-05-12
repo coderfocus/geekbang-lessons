@@ -1,4 +1,4 @@
-package com.coderfocus.myspringboot;
+package com.coderfocus.myspringboot.cache;
 
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
